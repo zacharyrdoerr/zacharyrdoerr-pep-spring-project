@@ -57,7 +57,7 @@ public class SocialMediaController {
     // get mapping for retrieving all messages in db
     @GetMapping("/messages")
     public List<Message> getAllMessages(){
-        return null;
+        return messageService.getAllMessages();
     }
 
     // get mapping for retrieving a message specified by id
@@ -74,7 +74,7 @@ public class SocialMediaController {
 
     // patch mapping for updating a message specified by id
     @PatchMapping("/messages/{messageId}")
-    public Message updateMessage(@PathVariable int messageId, @RequestBody Message newMessage){
+    public Message updateMessage(@PathVariable int messageId, @RequestBody String newMessageText){
         return null;
     }
 
