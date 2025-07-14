@@ -39,19 +39,19 @@ public class SocialMediaController {
     // post mapping for dealing with new user registrations
     @PostMapping("/register")
     public Account register(@RequestBody Account newAcc){
-        return null;
+        return accountService.persistAccount(newAcc);
     }
 
     // post mapping for dealing with user login verification
     @PostMapping("/login")
     public Account login(@RequestBody Account userAcc){
-        return null;
+        return accountService.getAccountByUsernameAndPassword(userAcc);
     }
 
     // post mapping for dealing with new messages
     @PostMapping("/messages")
     public Message postMessage(@RequestBody Message message){
-        return null;
+        return messageService.postMessage(message);
     }
 
     // get mapping for retrieving all messages in db
@@ -63,25 +63,25 @@ public class SocialMediaController {
     // get mapping for retrieving a message specified by id
     @GetMapping("/messages/{messageId}")
     public Message getMessage(@PathVariable int messageId){
-        return null;
+        return messageService.getMessage(messageId);
     }
 
     // delete mapping for deleting a message specified by id
     @DeleteMapping("/messages/{messageId}")
-    public Message deleteMessage(@PathVariable int messageId){
-        return null;
+    public int deleteMessage(@PathVariable int messageId){
+        return messageService.deleteMessage(messageId);
     }
 
     // patch mapping for updating a message specified by id
     @PatchMapping("/messages/{messageId}")
-    public Message updateMessage(@PathVariable int messageId, @RequestBody String newMessageText){
-        return null;
+    public int updateMessage(@PathVariable int messageId, @RequestBody String newMessageText){
+        return messageService.updateMessage(messageId, newMessageText);
     }
 
     // get mapping for retrieving all messages posted by a specified accountId
     @GetMapping("/accounts/{accountId}/messages")
     public List<Message> getMessagesByUser(@PathVariable int accountId){
-        return null;
+        return messageService.getMessagesByPostedBy(accountId);
     }
     
 }

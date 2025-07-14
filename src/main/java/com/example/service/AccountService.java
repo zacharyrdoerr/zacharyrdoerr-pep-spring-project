@@ -2,11 +2,13 @@ package com.example.service;
 
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.entity.Account;
 import com.example.repository.AccountRepository;
+import com.example.exception.*;
 
 @Service
 @Transactional
@@ -14,6 +16,7 @@ public class AccountService {
 
     AccountRepository accountRepository;
 
+    @Autowired
     public AccountService(AccountRepository accountRepository){
         this.accountRepository = accountRepository;
     }
@@ -21,13 +24,15 @@ public class AccountService {
     // service method for user registration
     public Account persistAccount(Account acc){
         if (getAccountByUsername(acc.getUsername())){
-
-            return null; // return the duplicate error code
+            
+            throw new DuplicateUserException();
+            
         }
         if (acc.getPassword().length() < 4 || acc.getUsername().isBlank()){
 
-            return null; // return the general error code
+            throw new ClientErrorException();
         }
+
         return accountRepository.save(acc);
     }
 
@@ -35,14 +40,7 @@ public class AccountService {
     // returns a boolean to determine if username already exists
     public Boolean getAccountByUsername(String username){
 
-        Optional<Account> optionalAccount = accountRepository.findAccountByUsername(username);
-
-        if (optionalAccount.isPresent()){
-
-            return true;
-        }else{
-            return false;
-        }
+        return accountRepository.findByUsername(username).isPresent();
     }
 
     // service method for obtaining account from a given id
@@ -60,14 +58,14 @@ public class AccountService {
 
     public Account getAccountByUsernameAndPassword(Account acc){
 
-        Optional<Account> optionalAccount =  accountRepository.findAccountByUsernameAndPassword(acc.getUsername(), acc.getPassword());
+        Optional<Account> optionalAccount =  accountRepository.findByUsernameAndPassword(acc.getUsername(), acc.getPassword());
 
         if (optionalAccount.isPresent()){
 
             return optionalAccount.get();
         }else{
 
-            return null;
+            throw new UnauthorizedUserException();
         }
     }
 
