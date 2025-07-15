@@ -24,12 +24,14 @@ public class AccountService {
     // service method for user registration
     public Account persistAccount(Account acc){
         if (getAccountByUsername(acc.getUsername())){
-            
+
+            // set status to 409 (Conflict)
             throw new DuplicateUserException();
             
         }
         if (acc.getPassword().length() < 4 || acc.getUsername().isBlank()){
 
+            // set status to 400 (Client Error)
             throw new ClientErrorException();
         }
 
@@ -65,6 +67,7 @@ public class AccountService {
             return optionalAccount.get();
         }else{
 
+            // set status to 401 (Unauthorized)
             throw new UnauthorizedUserException();
         }
     }

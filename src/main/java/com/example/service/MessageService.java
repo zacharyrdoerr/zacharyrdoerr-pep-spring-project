@@ -33,7 +33,7 @@ public class MessageService {
         {
                 return messageRepository.save(message);
         }else{
-
+            // set status to 400 (Client Error)
             throw new ClientErrorException();
         }
         
@@ -57,7 +57,7 @@ public class MessageService {
         
     }
     
-    // service method to delete a message by id and return the amount of rows affected
+    // service method to delete a message by id and return either 1 or null for response body
     public String deleteMessage(int id){
         if(messageRepository.findById(id).isPresent()){
             messageRepository.deleteMessageById(id);
@@ -77,6 +77,7 @@ public class MessageService {
 
             return messageRepository.updateMessageById(id, newMessageText);
         }else{
+            // set status to 400 (Client Error)
             throw new ClientErrorException();
         }
     }
