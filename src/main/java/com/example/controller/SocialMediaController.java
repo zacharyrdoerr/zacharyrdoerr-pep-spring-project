@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
 import com.example.service.AccountService;
 import com.example.service.MessageService;
+
 import com.example.entity.Account;
 import com.example.entity.Message;
+import com.example.entity.UpdateRequest;
 
 
 
@@ -68,13 +70,14 @@ public class SocialMediaController {
 
     // delete mapping for deleting a message specified by id
     @DeleteMapping("/messages/{messageId}")
-    public int deleteMessage(@PathVariable int messageId){
+    public String deleteMessage(@PathVariable int messageId){
         return messageService.deleteMessage(messageId);
     }
 
     // patch mapping for updating a message specified by id
     @PatchMapping("/messages/{messageId}")
-    public int updateMessage(@PathVariable int messageId, @RequestBody String newMessageText){
+    public int updateMessage(@PathVariable int messageId, @RequestBody UpdateRequest update){
+        String newMessageText = update.getMessageText();
         return messageService.updateMessage(messageId, newMessageText);
     }
 

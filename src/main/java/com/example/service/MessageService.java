@@ -20,7 +20,7 @@ public class MessageService {
     AccountRepository accountRepository;
 
     @Autowired
-    public MessageService(MessageRepository messageRepository){
+    public MessageService(MessageRepository messageRepository, AccountRepository accountRepository){
         this.messageRepository = messageRepository;
         this.accountRepository = accountRepository;
     }
@@ -58,9 +58,14 @@ public class MessageService {
     }
     
     // service method to delete a message by id and return the amount of rows affected
-    public int deleteMessage(int id){
-
-        return messageRepository.deleteMessageById(id);
+    public String deleteMessage(int id){
+        if(messageRepository.findById(id).isPresent()){
+            messageRepository.deleteMessageById(id);
+            return "1";
+        }else{
+            return null;
+        }
+        
     } 
 
     // service method to update a message by id and return the amount of rows affected
